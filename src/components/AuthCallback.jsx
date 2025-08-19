@@ -19,7 +19,11 @@ export function AuthCallback() {
       
       // Redirect to home page after successful authentication
       setTimeout(() => {
-        window.location.href = '/'
+        // Get the correct base path for GitHub Pages
+        const basePath = window.location.pathname.includes('/crochet-musings/') 
+          ? '/crochet-musings/' 
+          : '/'
+        window.location.href = basePath
       }, 2000)
     } catch (error) {
       console.error('Authentication callback error:', error)
@@ -29,7 +33,11 @@ export function AuthCallback() {
   }
 
   const handleRetry = () => {
-    window.location.href = '/'
+    // Get the correct base path for GitHub Pages
+    const basePath = window.location.pathname.includes('/crochet-musings/') 
+      ? '/crochet-musings/' 
+      : '/'
+    window.location.href = basePath
   }
 
   return (
