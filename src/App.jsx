@@ -302,7 +302,7 @@ function HomePage() {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/crochet-musings">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
