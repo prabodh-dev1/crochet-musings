@@ -16,6 +16,11 @@ function getRedirectUri() {
   
   // For GitHub Pages deployment (if using github.io domain)
   if (window.location.hostname.includes('github.io')) {
+    // Get the current base path (e.g., /crochet-musings)
+    const basePath = window.location.pathname.split('/')[1]
+    if (basePath && basePath !== 'auth') {
+      return `${window.location.origin}/${basePath}/auth/callback`
+    }
     return window.location.origin + '/auth/callback'
   }
   
