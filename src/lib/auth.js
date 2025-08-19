@@ -181,12 +181,37 @@ export async function logout() {
   localStorage.removeItem('refresh_token')
   localStorage.removeItem('id_token')
   
+  // Get the correct post-logout redirect URI
+  function getPostLogoutRedirectUri() {
+    // For production deployment
+    if (window.location.hostname === 'hema.prabodh.in') {
+      return 'https://hema.prabodh.in'
+    }
+    
+    // For GitHub Pages deployment
+    if (window.location.hostname.includes('github.io')) {
+      const basePath = window.location.pathname.split('/')[1]
+      if (basePath && basePath !== 'auth') {
+        return `${window.location.origin}/${basePath}/`
+      }
+      return window.location.origin
+    }
+    
+    // For local development
+    return window.location.origin
+  }
+  
   // Redirect to Keycloak logout
   if (idToken) {
-    const logoutUrl = `${KEYCLOAK_CONFIG.baseUrl}/realms/${KEYCLOAK_CONFIG.realm}/protocol/openid-connect/logout?id_token_hint=${idToken}&post_logout_redirect_uri=${encodeURIComponent(window.location.origin)}`
+    const postLogoutRedirectUri = getPostLogoutRedirectUri()
+    const logoutUrl = `${KEYCLOAK_CONFIG.baseUrl}/realms/${KEYCLOAK_CONFIG.realm}/protocol/openid-connect/logout?id_token_hint=${idToken}&post_logout_redirect_uri=${encodeURIComponent(postLogoutRedirectUri)}`
     window.location.href = logoutUrl
   } else {
-    window.location.href = '/'
+    // Fallback redirect
+    const basePath = window.location.pathname.includes('/crochet-musings/') 
+      ? '/crochet-musings/' 
+      : '/'
+    window.location.href = basePath
   }
 }
 
